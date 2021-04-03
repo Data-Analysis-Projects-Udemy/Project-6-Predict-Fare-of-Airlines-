@@ -4,7 +4,10 @@
 0. [Instalar xlrd ](#schema0)
 
 # a.-Comprensión de datos y Preprocesamiento de datos
-
+1. [Cargar los datos y ver los nulos](#schema1)
+2. [Limpiar los datos](#schema2)
+3. [Separar las horas y los minutos de duración de la duración](#schema3)
+4. [Separa las horas y los minutos](#schema4)
 <hr>
 
 <a name="schema0"></a>
@@ -82,10 +85,52 @@ for col in change:
 
 ![img](./images/003.png)
 
+<hr>
+
+<a name="schema3"></a>
+
+# 3. Separar las horas y los minutos de duración de la duración
+
+~~~python
+duration=list(train_data['Duration'])
+
+for i in range(len(duration)):
+    if len(duration[i].split(' '))==2:
+        pass
+    else:
+        if 'h' in duration[i]:                  
+            duration[i]=duration[i] + ' 0m'      
+        else:
+            duration[i]='0h '+ duration[i]   
+train_data['Duration']=duration
+~~~
+![img](./images/006.png)
+
+<hr>
+
+<a name="schema4"></a>
+
+# 4. Separa las horas y los minutos
+~~~python
+def hour(x):
+    return x.split(' ')[0][0:-1]
+
+def minute(x):
+    return x.split(' ')[1][0:-1]
 
 
+train_data['Duration_hours']=train_data['Duration'].apply(hour)
+train_data['Duration_mins']=train_data['Duration'].apply(minute)
+~~~
+![img](./images/007.png)
 
 
+Convertir las horas y los minutos a enteros
+~~~python
+train_data['Duration_hours']=train_data['Duration_hours'].astype(int)
+train_data['Duration_mins']=train_data['Duration_mins'].astype(int)
+~~~
+![img](./images/008.png)
 
 
 
