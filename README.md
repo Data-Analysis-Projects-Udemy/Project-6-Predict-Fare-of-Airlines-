@@ -246,6 +246,84 @@ data_train.drop(columns=['Airline', 'Source','Destination'], inplace = True)
 ~~~
 ![img](./images/017.png)
 
+<hr>
+
+<a name="schema6"></a>
+
+# 6. Detección de outlier
+Función para dibujar
+~~~python
+def plot(df,col):
+    fig,(ax1,ax2)=plt.subplots(2,1)
+    sns.distplot(df[col],ax=ax1)
+    sns.boxplot(df[col],ax=ax2)
+plt.figure(figsize=(30,20))
+plot(data_train,'Price')
+plt.savefig("./images/out.png")
+~~~
+![img](./images/out.png)
+
+
+Nos quedamos con los valores por debajo de `40000`
+~~~python
+data_train['Price']=np.where(data_train['Price']>=40000,data_train['Price'].median(),data_train['Price'])
+plt.figure(figsize=(30,20))
+plot(data_train,'Price')
+plt.savefig("./images/no_out.png")
+~~~
+![img](./images/no_out.png)
+
+
+<hr>
+
+<a name="schema7"></a>
+
+# 7. Seleccione las mejores funciones usando Técnica de selección de funciones
+Separar tus datos independientes y dependientes
+~~~python
+X=data_train.drop('Price',axis=1)
+X.head()
+~~~
+
+![img](./images/018.png)
+
+~~~python
+y=data_train['Price']
+y
+~~~
+![img](./images/019.png)
+<hr>
+
+<a name="schema8"></a>
+
+# 8. Aplicar la selección de características en los datos
+~~~python
+from sklearn.feature_selection import mutual_info_classif
+mutual_info_classif(X,y)
+~~~
+![img](./images/020.png)
+~~~python
+imp=pd.DataFrame(mutual_info_classif(X,y),index=X.columns)
+imp
+~~~
+
+![img](./images/021.png)
+
+~~~python
+imp.columns = ['importance']
+imp.sort_values(by = 'importance', ascending = False)
+~~~
+![img](./images/022.png)
+
+
+
+
+
+
+
+
+
+
 
 
 
