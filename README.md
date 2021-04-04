@@ -214,6 +214,41 @@ categorical.isnull().sum()
 for i in ['Route_3', 'Route_4', 'Route_5']:
     categorical[i].fillna('None',inplace=True)
 ~~~
+Extraer ahora cuántas categorías hay en cada cat_feature
+~~~python
+for feature in categorical.columns:
+    print('{} has total {} categories \n'.format(feature,len(categorical[feature].value_counts())))
+~~~
+![img](./images/014.png)
+
+Como veremos, tenemos muchas funciones en Route, una codificación en caliente no será una mejor opción, permite aplicar la codificación de etiquetas.
+
+~~~python
+from sklearn.preprocessing import LabelEncoder
+encoder=LabelEncoder()
+for i in ['Route_1', 'Route_2', 'Route_3', 'Route_4','Route_5']:
+    categorical[i]=encoder.fit_transform(categorical[i])
+~~~
+
+
+Cambiamos lo valores de la columna `Total_Stops`
+
+~~~python
+dict={'non-stop':0, '2 stops':2, '1 stop':1, '3 stops':3, '4 stops':4}
+categorical['Total_Stops']=categorical['Total_Stops'].map(dict)
+~~~
+![img](./images/015.png)
+
+Concatenamos dataframe --> categorical + Airline + Source + Destination
+~~~python
+data_train=pd.concat([categorical,Airline,Source,Destination,train_data[cont_col]],axis=1)
+data_train.drop(columns=['Airline', 'Source','Destination'], inplace = True)
+~~~
+![img](./images/017.png)
+
+
+
+
 
 
 
