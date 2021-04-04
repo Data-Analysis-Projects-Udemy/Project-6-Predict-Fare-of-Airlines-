@@ -132,6 +132,92 @@ train_data['Duration_mins']=train_data['Duration_mins'].astype(int)
 ~~~
 ![img](./images/008.png)
 
+<hr>
+
+<a name="schema5"></a>
+
+# 5. Manejar datos categóricos y características de codificación
+
+Manejo de datos categóricos
+Estamos utilizando 2 técnicas de codificación principales para convertir datos categóricos en algún formato numérico.
+
+Datos nominales -> los datos no están en ningún orden -> OneHotEncoder se usa en este caso
+Datos ordinales -> los datos están en orden -> LabelEncoder se usa en este caso
+
+
+
+Aerolínea vs Análisis de precios
+~~~python
+plt.figure(figsize = (15,5))
+sns.boxplot(x = 'Airline', y = 'Price', data = train_data.sort_values('Price',ascending = False))
+plt.savefig("./images/airline.png")
+~~~
+![img](./images/airline.png)
+
+Conclusión -> En el gráfico podemos ver que Jet Airways Business tiene el precio más alto. Aparte de la primera aerolínea, casi todas tienen una mediana similar.
+
+Realizar Total_Stops vs Análisis de precios
+
+~~~python
+plt.figure(figsize=(15,5))
+sns.boxplot(y='Price',x='Total_Stops',data=train_data.sort_values('Price',ascending=False))
+plt.savefig("./images/price.png")
+~~~
+![img](./images/price.png)
+
+
+Como la aerolínea es un dato categórico nominal, realizaremos OneHotEncoding
+~~~python
+Airline=pd.get_dummies(categorical['Airline'], drop_first=True)
+~~~
+![img](./images/010.png)
+
+Source vs Price
+
+~~~python
+plt.figure(figsize=(15,5))
+sns.catplot(y='Price',x='Source',data=train_data.sort_values('Price',ascending=False),kind='boxen')
+plt.savefig("./images/source.png")
+~~~
+![img](./images/source.png)
+
+~~~python
+Source=pd.get_dummies(categorical['Source'], drop_first=True)
+~~~
+![img](./images/011.png)
+
+~~~python
+plt.figure(figsize=(15,5))
+sns.catplot(y='Price',x='Destination',data=train_data.sort_values('Price',ascending=False),kind='boxen')
+plt.savefig("./images/destination.png")
+~~~
+![img](./images/destination.png)
+
+~~~python
+Destination=pd.get_dummies(categorical['Destination'], drop_first=True)
+~~~
+![img](./images/012.png)
+
+~~~python
+categorical['Route_1']=categorical['Route'].str.split('→').str[0]
+categorical['Route_2']=categorical['Route'].str.split('→').str[1]
+categorical['Route_3']=categorical['Route'].str.split('→').str[2]
+categorical['Route_4']=categorical['Route'].str.split('→').str[3]
+categorical['Route_5']=categorical['Route'].str.split('→').str[4]
+~~~
+![img](./images/013.png)
+
+
+Cambiamos los valores `Nan`por `None` en la columna `Route`
+~~~python
+categorical.isnull().sum()
+for i in ['Route_3', 'Route_4', 'Route_5']:
+    categorical[i].fillna('None',inplace=True)
+~~~
+
+
+
+
 
 
 
