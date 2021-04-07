@@ -323,22 +323,111 @@ imp.sort_values(by = 'importance', ascending = False)
 ~~~
 ![img](./images/022.png)
 
+<hr>
+
+<a name="schema9"></a>
+
+# 9 Aplicación Random Forest en datos y  Automatizar predicciones
+
+~~~python
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
+from sklearn.ensemble import RandomForestRegressor
+
+X_train,X_test, y_train, y_test = train_test_split(X,y, test_size = 0.2)
+
+def predict(ml_model):
+    model = ml_model.fit(X_train, y_train)
+    print("Training score {}".format(model.score(X_train, y_train)))
+    y_prediction = model.predict(X_test)
+    print("Predictions are: {}".format(y_prediction))
+    print('\n')
+    r2_score = metrics.r2_score(y_test, y_prediction)
+    print("r2 score : {}".format(r2_score))
+    print('MAE:',metrics.mean_absolute_error(y_test,y_prediction))
+    print('MSE:',metrics.mean_squared_error(y_test,y_prediction))
+    print('RMSE:',np.sqrt(metrics.mean_squared_error(y_test,y_prediction)))
+    sns.displot(y_test-y_prediction)
+    
+predict(RandomForestRegressor())
+~~~
+![img](./images/023.png)
 
 
+### Vamos a probar varios modelos
+~~~python
+from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.tree import DecisionTreeRegressor
+
+predict(DecisionTreeRegressor(),0)
+~~~
+![img](./images/024.png)
+
+~~~python
+predict(LinearRegression(),0)
+~~~
+![img](./images/025.png)
+~~~python
+predict(KNeighborsRegressor(), 0)
+~~~
+![img](./images/026.png)
+
+<hr>
+
+<a name="schema10"></a>
+
+# 10. Ajuste de hiperparámetros
+
+1.Elija el siguiente método para el ajuste de hiperparámetros
+
+     a.RandomizedSearchCV -> Camino rápido al modelo Hypertune
+     
+     b.GridSearchCV -> Manera lenta de hypertune mi modelo
+     
+
+2.Asignar hiperparámetros en forma de diccionario
+
+3.Ajuste el modelo
+
+4.Compruebe los mejores parámetros y la mejor puntuación
+
+~~~python
+from sklearn.model_selection import RandomizedSearchCV
+# Number of trees in random forest
+n_estimators=[int(x) for x in np.linspace(start=100,stop=1200,num=6)]
+
+# Number of features to consider at every split
+max_features=['auto','sqrt']
+
+# Maximum number of levels in tree
+max_depth=[int(x) for x in np.linspace(5,30,num=4)]
+
+# Minimum number of samples required to split a node
+min_samples_split=[5,10,15,100]
 
 
+random_grid={
+    'n_estimators':n_estimators,
+    'max_features':max_features,
+'max_depth':max_depth,
+    'min_samples_split':min_samples_split
+}
 
+reg_rf=RandomForestRegressor()
+rf_random = RandomizedSearchCV(estimator=reg_rf,param_distributions=random_grid,cv=3,verbose=2,n_jobs=-1)
+rf_random.fit(X_train,y_train)
+rf_random.best_params_
+~~~
+![img](./images/027.png)
 
+~~~python
+y_predict = rf_random.predict(X_test)
+metrics.r2_score(y_test,y_predict)
+~~~
 
-
-
-
-
-
-
-
-
-
+![img](./images/028.png)
 
 
 
