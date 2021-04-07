@@ -1,4 +1,4 @@
-# Project-6-Predict-Fare-of-Airlines-
+# Project 6 Predict Fare of Airlines 
 
  
 0. [Instalar xlrd ](#schema0)
@@ -8,6 +8,11 @@
 2. [Limpiar los datos](#schema2)
 3. [Separar las horas y los minutos de duración de la duración](#schema3)
 4. [Separa las horas y los minutos](#schema4)
+5. [Manejar datos categóricos y características de codificación](#schema5)
+6. [Detección de outlier](#schema6)
+7. [Seleccione las mejores funciones usando Técnica de selección de funciones](#schema7)
+8. [Aplicar la selección de características en los datos](#schema8)
+
 <hr>
 
 <a name="schema0"></a>
@@ -251,6 +256,7 @@ data_train.drop(columns=['Airline', 'Source','Destination'], inplace = True)
 <a name="schema6"></a>
 
 # 6. Detección de outlier
+
 Función para dibujar
 ~~~python
 def plot(df,col):
@@ -279,6 +285,7 @@ plt.savefig("./images/no_out.png")
 <a name="schema7"></a>
 
 # 7. Seleccione las mejores funciones usando Técnica de selección de funciones
+
 Separar tus datos independientes y dependientes
 ~~~python
 X=data_train.drop('Price',axis=1)
@@ -297,6 +304,7 @@ y
 <a name="schema8"></a>
 
 # 8. Aplicar la selección de características en los datos
+
 ~~~python
 from sklearn.feature_selection import mutual_info_classif
 mutual_info_classif(X,y)
