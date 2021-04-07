@@ -12,6 +12,8 @@
 6. [Detección de outlier](#schema6)
 7. [Seleccione las mejores funciones usando Técnica de selección de funciones](#schema7)
 8. [Aplicar la selección de características en los datos](#schema8)
+9. [Aplicación Random Forest en datos y  Automatizar predicciones](#schema9)
+10. [Ajuste de hiperparámetros](#schema10)
 
 <hr>
 
